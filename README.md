@@ -1,51 +1,39 @@
-# Building a GitHub Portfolio
 
-_Building a GitHub Portfolio in less than an hour._
 
-## Welcome
+# Welcome to a GitHub-based learning activity!
 
-[GitHub](https://en.wikipedia.org/wiki/GitHub) is a cloud-based platform for creating, storing, managing, and sharing text files. These files can be anything from reports and documents, code and scripts, or data files. GitHub has a thriving community that focuses on collaboration, open source, and educational materials.
+By building this repository, you have taken you first steps is building a custom GitHub Profile and a digital portfolio.
 
-- **Who is this for**: People interested in making a easy, pleasant GitHub landing page for their profile.
-- **What you'll learn**: GitHub, Markdown, Basic repository structure
-- **What you'll build**: A personal GitHub Profile for your account
-- **Prerequisites**:
-  - Hopefully, none
+The documentation for this activity will automatically populate mostly in a single issue of the `Issue tracker` and here in the README.md file for the repo.
 
-- **How long**: This exercise takes less than 1 hour to complete.
+## Theory: What is a repository `Issue tracker`?
 
-In this exercise, you will:
+Across the top of this site there is a row of tabs (`Code`, `Issues`, `Pull Requests`, etc.). The [`Issues`](../../issues) tab, or `Issue tracker`, is a place to track various issues for the repository. Anyone with access to the repository is able to read, open, and comment on an issue within a repositories issue tracker.
 
-1. Learn how to copy a github template
-1. Learn about GitHub's Issues tracker
-1. Learn about markup languages
-1. Edit a file with Markdown
-1. Commit the file
-1. Create one element of a digital portfolio (a personalized GitHub Profile)
-1. Experience GitHub actions in use
-1. Optionally, employ simple GitHub actions in custom profile
-
-### How to start this exercise
-
-Simply copy the exercise to your account, then give your favorite Octocat (Mona) **about 20 seconds** to prepare the first lesson, then **refresh the page**.
+## Activity: Navigate GitHub repositories to our first issue!
 
 > [!NOTE]
-> Please set the name of the repository to your GitHub user name!!!
->
-> ![Repository name is user name](https://github.com/ccbaumler/building-a-github-profile/blob/main/images/repo-username.png?raw=true)
+> Please review the following three steps before moving on!
 
-[![start-course](https://img.shields.io/badge/Copy%20Exercise-%E2%86%92-1f883d?style=for-the-badge&logo=github&labelColor=197935)](https://github.com/new?template_owner=ccbaumler&template_name=building-a-github-profile&owner=%40me&name=YOUR_OWNER_NAME_HERE_AS_REPO_NAME&description=My+GitHub+Profile+Repository&visibility=public)
+1. Click the `Issues` tab.
+
+![image of issue tracker tab](https://github.com/ccbaumler/building-a-github-profile/blob/main/images/issue-tracker.png?raw=true)
+
+2. Click on the first issue for the repository named `Let's learn markdown`.
+
+![image of first issue](https://github.com/ccbaumler/building-a-github-profile/blob/main/images/issue-first-issue.png?raw=true)
+
+3. You will see this issue created by the github-actions bot.
+
+![image of the issue](https://github.com/ccbaumler/building-a-github-profile/blob/main/images/issue-text.png?raw=true)
+
+> [!TIP]
+> Wait about 20 seconds and refresh the page after commenting on this issue...
 
 <details>
 <summary>Having trouble? 🤷</summary><br/>
 
-When copying the exercise, we recommend the following settings:
-
-- For owner, choose your personal account.
-
-- We recommend creating a public repository, since private repositories will use Actions minutes.
-
-If the exercise isn't ready in 20 seconds, please check the [Actions](../../actions) tab.
+If the issue isn't ready in 20 seconds, please check the [Actions](../../actions) tab.
 
 - Check to see if a job is running. Sometimes it simply takes a bit longer.
 
@@ -53,6 +41,4 @@ If the exercise isn't ready in 20 seconds, please check the [Actions](../../acti
 
 </details>
 
----
 
-&copy; 2025 GitHub &bull; [Code of Conduct](https://www.contributor-covenant.org/version/2/1/code_of_conduct/code_of_conduct.md) &bull; [MIT License](https://gh.io/mit)
