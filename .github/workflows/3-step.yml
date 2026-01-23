@@ -1,0 +1,76 @@
+name: Step 3 – Unlock GitHub Profile challenge
+
+on:
+  workflow_dispatch:
+  issue_comment:
+    types: [created]
+
+permissions:
+  contents: write
+  issues: write
+
+jobs:
+  get_current_step:
+    name: Check current step number
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - id: get_step
+        run: |
+          echo "current_step=$(cat ./.github/steps/-step.txt)" >> $GITHUB_OUTPUT
+    outputs:
+      current_step: ${{ steps.get_step.outputs.current_step }}
+
+  check_step_3:
+    name: Check user markdown comment
+    needs: get_current_step
+
+    if: >-
+      ${{ !github.event.repository.is_template
+          && needs.get_current_step.outputs.current_step == 3 }}
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Check markdown challenge
+        id: check_ready
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          COMMENT: ${{ github.event.comment.body }}
+
+        run: |
+          LIST_3_REGEX='((^)([-+*]|[0-9]+[.)]).*[\n]?){3,}'
+
+          if ! [[ "$COMMENT" =~ $LIST_3_REGEX ]]; then
+            MISSING+=' 3 Element List: (-, *, +, or 1)'
+          fi
+
+          if [ -n "$MISSING" ]; then
+            gh issue comment "${{ github.event.issue.number }}" \
+              --body "❌ Your Markdown is missing:$MISSING"
+
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          gh issue comment "${{ github.event.issue.number }}" \
+            --body "✅ Learner is ready — advancing to Step 4"
+
+          echo "ready=true" >> "$GITHUB_OUTPUT"
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+
+      - name: Update to step 4
+        if: steps.check_ready.outputs.ready == 'true'
+        uses: ./.github/actions/action-update-step-in-issue
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          from_step: 3
+          to_step: X
+          issue_number: ${{ github.event.issue.number }}

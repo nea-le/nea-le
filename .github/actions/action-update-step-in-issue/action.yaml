@@ -1,0 +1,81 @@
+name: "Update step (issue-based)"
+description: "Update the course issue when the learner completes a step."
+inputs:
+  token:
+    description: "Set to [secrets.GITHUB_TOKEN]."
+    required: true
+  from_step:
+    description: "Requires the -step.txt file set to FROM_STEP."
+    required: true
+  to_step:
+    description: "The step number to go to next."
+    required: true
+  issue_number:
+    description: "The number of the issue to update."
+    required: true
+  branch_name:
+    description: "If the learner is working in a branch, add the branch name."
+  base_branch_name:
+    description: "Optional base branch name (default: main)."
+    required: false
+    default: "main"
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.token }}
+        FROM_STEP: ${{ inputs.from_step }}
+        TO_STEP: ${{ inputs.to_step }}
+        ISSUE_NUMBER: ${{ inputs.issue_number }}
+        BRANCH_NAME: ${{ inputs.branch_name }}
+        BASE_BRANCH_NAME: ${{ inputs.base_branch_name }}
+      run: |
+        echo "Check that all required env variables are set"
+        if [ -z "$TO_STEP" ]; then
+          echo "TO_STEP is unset or empty"
+          exit 1
+        fi
+        if [ -z "$FROM_STEP" ]; then
+          echo "FROM_STEP is unset or empty"
+          exit 1
+        fi
+        if [ -z "$GITHUB_TOKEN" ]; then
+          echo "GITHUB_TOKEN is unset or empty"
+          exit 1
+        fi
+        if [ -z "$ISSUE_NUMBER" ]; then
+          echo "ISSUE_NUMBER is unset or empty"
+          exit 1
+        fi
+
+        echo "Check that we are on FROM_STEP"
+        if [ "$(cat .github/steps/-step.txt)" != "$FROM_STEP" ]; then
+          echo "Current step is not $FROM_STEP — nothing to do"
+          exit 0
+        fi
+
+        echo "Get next step content"
+        NEXT_STEP=$(cat .github/steps/[$TO_STEP]-*.md)
+
+        echo "Posting next step content to issue #$ISSUE_NUMBER"
+        gh issue comment "$ISSUE_NUMBER" --body "$NEXT_STEP"
+
+        echo "Update step file to TO_STEP"
+        echo "$TO_STEP" > .github/steps/-step.txt
+
+        echo "Commit the updated step.txt for tracking"
+        git config user.name github-actions[bot]
+        git config user.email github-actions[bot]@users.noreply.github.com
+        git add .github/steps/-step.txt
+        git commit -m "Advance to step $TO_STEP"
+        git push
+
+        echo "If BRANCH_NAME exists, cherry-pick the step.txt update"
+        if git show-ref --quiet refs/heads/$BRANCH_NAME; then
+          git checkout $BRANCH_NAME
+          git cherry-pick $BASE_BRANCH_NAME
+          git push
+        else
+          echo "Branch $BRANCH_NAME does not exist — skipping"
+        fi
